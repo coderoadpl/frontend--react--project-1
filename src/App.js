@@ -1,4 +1,5 @@
 import React from 'react'
+import DisplayNumber from './DisplayNumber'
 
 export class App extends React.Component {
   intervalId = null
@@ -28,13 +29,13 @@ export class App extends React.Component {
     return (
       <div>
         CodeRoad APP
-        <br />
-        <br />
         {
           randomNumber === null ?
-            'Waiting for first number'
+            <h1>Waiting for first number</h1>
             :
-            randomNumber
+            <DisplayNumber
+              number={randomNumber}
+            />
         }
       </div>
     )

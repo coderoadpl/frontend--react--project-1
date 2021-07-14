@@ -5,14 +5,21 @@ export class App extends React.Component {
   intervalId = null
 
   state = {
+    hasError: false,
     randomNumber: null
+  }
+
+  static getDerivedStateFromError (error) {
+    return { hasError: true }
   }
 
   componentDidMount () {
     this.intervalId = setInterval(
       () => {
+        const number = Math.floor(Math.random() * 10)
+        console.log('Random number', number)
         this.setState(() => ({
-          randomNumber: Math.floor(Math.random() * 10)
+          randomNumber: number
         }))
       },
       1000
@@ -23,19 +30,38 @@ export class App extends React.Component {
     clearInterval(this.intervalId)
   }
 
+  handleDismissError = () => {
+    this.setState(() => ({
+      hasError: false
+    }))
+  }
+
   render () {
-    const { randomNumber } = this.state
+    const {
+      randomNumber,
+      hasError
+    } = this.state
 
     return (
       <div>
         CodeRoad APP
         {
-          randomNumber === null ?
-            <h1>Waiting for first number</h1>
+          hasError ?
+            <div>
+              <h1>Error occurred</h1>
+              <button
+                onClick={this.handleDismissError}
+              >
+                Dismiss
+              </button>
+            </div>
             :
-            <DisplayNumber
-              number={randomNumber}
-            />
+            randomNumber === null ?
+              <h1>Waiting for first number</h1>
+              :
+              <DisplayNumber
+                number={randomNumber}
+              />
         }
       </div>
     )
